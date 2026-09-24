@@ -27,25 +27,30 @@ jobs:
             runner: windows-latest
             target: x86_64-pc-windows-msvc
             bundles: nsis
+            asset-path: src-tauri/target/x86_64-pc-windows-msvc/release/bundle/nsis/*.exe
           - name: windows-aarch64
             runner: windows-latest
             target: aarch64-pc-windows-msvc
             rust-targets: aarch64-pc-windows-msvc
             bundles: nsis
+            asset-path: src-tauri/target/aarch64-pc-windows-msvc/release/bundle/nsis/*.exe
           - name: macos-universal
             runner: macos-latest
             target: universal-apple-darwin
             rust-targets: aarch64-apple-darwin,x86_64-apple-darwin
             bundles: dmg
+            asset-path: src-tauri/target/universal-apple-darwin/release/bundle/dmg/*.dmg
           - name: linux-x86_64
             runner: ubuntu-24.04
             target: x86_64-unknown-linux-gnu
             bundles: appimage
+            asset-path: src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/*.AppImage
           - name: linux-aarch64
             runner: ubuntu-24.04-arm
             target: aarch64-unknown-linux-gnu
             rust-targets: aarch64-unknown-linux-gnu
             bundles: appimage
+            asset-path: src-tauri/target/aarch64-unknown-linux-gnu/release/bundle/appimage/*.AppImage
 
     steps:
       - name: Checkout
@@ -82,11 +87,19 @@ jobs:
       - name: Build desktop bundle
         run: npm run tauri -- build --bundles ${{ matrix.bundles }} --target ${{ matrix.target }}
 
+      - name: Rebuild DMG with Applications symlink
+        if: runner.os == 'macOS'
+        run: |
+          VERSION="$(node -p "require('./package.json').version")"
+          BUNDLE_DIR="src-tauri/target/universal-apple-darwin/release/bundle"
+          APP_PATH="$(find "${BUNDLE_DIR}/macos" -maxdepth 1 -name '*.app' | head -n 1)"
+          scripts/make-macos-dmg.sh "${VERSION}" "${APP_PATH}" "${BUNDLE_DIR}/dmg"
+
       - name: Upload desktop artifact
         uses: actions/upload-artifact@v4
         with:
           name: desktop-${{ matrix.name }}
-          path: src-tauri/target/**/release/bundle/**/*
+          path: ${{ matrix.asset-path }}
           if-no-files-found: error
 
   web:
@@ -177,12 +190,7 @@ jobs:
         with:
           path: release-assets
           name: web-tarball
-
-      - name: Flatten assets
-        run: |
-          cd release-assets
-          find . -mindepth 2 -type f -exec mv -t . {} +
-          find . -mindepth 2 -type d -empty -delete
+          merge-multiple: true
 
       - name: Make AppImage executable
         run: |
