@@ -614,9 +614,9 @@ function AppInner() {
           </div>
           <div className="brand-copy">
             <Title level={3} className="brand-title">
-              本地面试题随机工具
+              面试猿
             </Title>
-            <Text type="secondary">题库、API Key、接口地址都只保存在当前浏览器</Text>
+            <Text type="secondary">OrangutanInterview · 题库、API Key、接口地址都只保存在本机</Text>
           </div>
         </div>
         <div className="topbar-actions">
