@@ -91,9 +91,8 @@ jobs:
         if: runner.os == 'macOS'
         run: |
           VERSION="$(node -p "require('./package.json').version")"
-          BUNDLE_DIR="src-tauri/target/universal-apple-darwin/release/bundle"
-          APP_PATH="$(find "${BUNDLE_DIR}/macos" -maxdepth 1 -name '*.app' | head -n 1)"
-          scripts/make-macos-dmg.sh "${VERSION}" "${APP_PATH}" "${BUNDLE_DIR}/dmg"
+          DMG_PATH="$(find src-tauri/target/universal-apple-darwin/release/bundle/dmg -maxdepth 1 -name '*.dmg' | head -n 1)"
+          scripts/make-macos-dmg.sh "${VERSION}" "${DMG_PATH}"
 
       - name: Upload desktop artifact
         uses: actions/upload-artifact@v4
