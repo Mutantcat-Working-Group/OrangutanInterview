@@ -1025,6 +1025,14 @@ function AppInner() {
             </Popconfirm>
           </Space>
         </Form>
+        <div style={{ marginTop: 4 }}>
+          <Text type="secondary" style={{ fontSize: 12 }}>
+            由异猫工作群（mutantcat.org）发行 · GitHub{' '}
+            <a href="https://github.com/Mutantcat-Working-Group" target="_blank" rel="noreferrer">
+              Mutantcat-Working-Group
+            </a>
+          </Text>
+        </div>
       </Drawer>
     </div>
   );
