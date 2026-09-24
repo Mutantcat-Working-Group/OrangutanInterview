@@ -165,11 +165,18 @@ jobs:
     needs: [desktop, web]
     runs-on: ubuntu-24.04
     steps:
-      - name: Download all artifacts
+      - name: Download release artifacts
         uses: actions/download-artifact@v4
         with:
           path: release-assets
+          pattern: desktop-*
           merge-multiple: true
+
+      - name: Download web tarball
+        uses: actions/download-artifact@v4
+        with:
+          path: release-assets
+          name: web-tarball
 
       - name: Flatten assets
         run: |
