@@ -11,6 +11,7 @@
 - 本地面试刷题工具：题库、API Key、接口地址全部只保存在本机，不经过任何后端。
 - 点击「显示答案」时才直接调用你自己配置的 OpenAI 兼容接口生成答案，支持流式输出与 Markdown 渲染。
 - 同一套前端页面，三种使用方式：浏览器直接打开、Tauri 桌面版、Docker 容器部署。
+- **发行方** 由异猫工作群（mutantcat.org）发行，GitHub: https://github.com/Mutantcat-Working-Group
 
 核心价值：
 
@@ -126,3 +127,13 @@ git push origin v1.0.20260920
 │   └── index.css       # 全局样式
 └── vite.config.js
 ```
+
+---
+
+### 九、开源协议与致谢
+
+- 本项目基于 [MIT](LICENSE) 许可发布。
+
+## 致谢
+
+本项目是 [tyza66/interview-question-list-random-ai-answer-ankilike](https://github.com/tyza66/interview-question-list-random-ai-answer-ankilike) 的 Fork，感谢原仓库及其作者的优秀开源工作，本仓库在其基础上继续维护与改进。

@@ -10,6 +10,7 @@
 - A local interview practice tool: the question bank, API key and endpoint stay on your machine and never touch a backend.
 - An answer is generated only when you click "Show Answer", calling the OpenAI-compatible endpoint you configured, with streaming output and Markdown rendering.
 - One frontend, three ways to run it: straight in a browser, as a Tauri desktop app, or as a Docker container.
+- **Publisher** Mutantcat Working Group (mutantcat.org) · GitHub: https://github.com/Mutantcat-Working-Group
 
 Core value:
 
