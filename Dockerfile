@@ -13,7 +13,7 @@ RUN npm run build
 
 FROM nginx:1.27-alpine
 
-LABEL org.opencontainers.image.title="OrangutanInterview" \
+LABEL org.opencontainers.image.title="面试猿" \
       org.opencontainers.image.description="Local interview practice tool with AI answers" \
       org.opencontainers.image.version="${VERSION}" \
       org.opencontainers.image.vendor="Mutantcat Working Group"

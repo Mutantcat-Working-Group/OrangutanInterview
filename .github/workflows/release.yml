@@ -132,12 +132,12 @@ jobs:
       - name: Package web tarball
         run: |
           VERSION="${{ steps.version.outputs.value }}"
-          STAGE="staging/OrangutanInterview-web-${VERSION}"
+          STAGE="staging/面试猿-web-${VERSION}"
           mkdir -p "${STAGE}"
           cp -r dist/. "${STAGE}/"
           cp README.md README_EN.md "${STAGE}/"
           mkdir -p web-dist
-          tar -czf "web-dist/OrangutanInterview-web-${VERSION}.tar.gz" -C staging "OrangutanInterview-web-${VERSION}"
+          tar -czf "web-dist/面试猿-web-${VERSION}.tar.gz" -C staging "面试猿-web-${VERSION}"
 
       - name: Upload web tarball artifact
         uses: actions/upload-artifact@v4

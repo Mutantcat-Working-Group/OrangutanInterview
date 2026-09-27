@@ -40,7 +40,6 @@ import {
   SearchOutlined,
   SettingOutlined,
   StopOutlined,
-  ThunderboltOutlined,
 } from '@ant-design/icons';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
@@ -610,16 +609,17 @@ function AppInner() {
       <header className="topbar">
         <div className="brand">
           <div className="brand-icon">
-            <ThunderboltOutlined />
+            <img src="/logo.png" className="brand-logo" alt="OrangutanInterview" />
           </div>
           <div className="brand-copy">
             <Title level={3} className="brand-title">
               面试猿
             </Title>
-            <Text type="secondary">OrangutanInterview · 题库、API Key、接口地址都只保存在本机</Text>
+            <Text type="secondary">OrangutanInterview · 题库与答案缓存，只留在本机</Text>
           </div>
         </div>
         <div className="topbar-actions">
+          <div className="topbar-stats">
           <div className="stat-chip">
             <Text type="secondary">题目</Text>
             <Text strong>{questions.length}</Text>
@@ -627,6 +627,7 @@ function AppInner() {
           <div className="stat-chip">
             <Text type="secondary">已答</Text>
             <Text strong>{answeredCount}</Text>
+          </div>
           </div>
           <Button type="primary" icon={<RetweetOutlined />} onClick={() => startPractice(questions)} disabled={!questions.length}>
             随机抽题
@@ -645,7 +646,7 @@ function AppInner() {
               <Text type="secondary">逐条管理面试题，点击「练习」进入随机练习区</Text>
             </div>
             <Space wrap className="panel-head-actions library-head-actions">
-              <Button icon={<PlusOutlined />} type="primary" ghost onClick={() => openQuestionModal(null)}>
+              <Button icon={<PlusOutlined />} type="primary" onClick={() => openQuestionModal(null)}>
                 添加题目
               </Button>
               <Button icon={<ImportOutlined />} onClick={openImportModal}>
@@ -765,7 +766,7 @@ function AppInner() {
                     <div className="anki-face-head">
                       <Space wrap size={[6, 4]}>
                         {currentQuestion.category ? (
-                          <Tag color="cyan">{currentQuestion.category}</Tag>
+                          <Tag>{currentQuestion.category}</Tag>
                         ) : (
                           <Tag>未分类</Tag>
                         )}
@@ -775,7 +776,6 @@ function AppInner() {
                         {currentQuestion.source && (
                           <Tag
                             icon={<LinkOutlined />}
-                            color="geekblue"
                             style={{ cursor: 'pointer' }}
                             onClick={() => window.open(currentQuestion.source, '_blank', 'noopener')}
                           >
@@ -861,7 +861,7 @@ function AppInner() {
                         />
                       ) : answerLoading && !answerText ? (
                         <div className="generating">
-                          <RobotOutlined spin style={{ fontSize: 26, color: '#0f766e' }} />
+                          <RobotOutlined spin style={{ fontSize: 26, color: '#c2410c' }} />
                           <Text type="secondary">正在向模型请求答案…</Text>
                         </div>
                       ) : (

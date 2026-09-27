@@ -13,13 +13,13 @@ ReactDOM.createRoot(document.getElementById('root')).render(
       locale={zhCN}
       theme={{
         token: {
-          colorPrimary: '#0f766e',
-          colorInfo: '#0f766e',
+          colorPrimary: '#c2410c',
+          colorInfo: '#3d6472',
           colorSuccess: '#4d7c0f',
-          colorWarning: '#c2410c',
+          colorWarning: '#d97706',
           colorError: '#be123c',
-          colorTextBase: '#1f2a28',
-          colorBgLayout: '#f4f5f2',
+          colorTextBase: '#211d17',
+          colorBgLayout: '#f5f3ee',
           borderRadius: 6,
           fontFamily:
             '-apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", "Helvetica Neue", Arial, sans-serif',
@@ -29,7 +29,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
           Input: { controlHeight: 36 },
           InputNumber: { controlHeight: 36 },
           Select: { controlHeight: 36 },
-          Table: { headerBg: '#eef1ed', headerColor: '#42504c' },
+          Table: { headerBg: '#faf8f4', headerColor: '#5c554a', borderColor: '#e6e1d6' },
         },
       }}
     >
