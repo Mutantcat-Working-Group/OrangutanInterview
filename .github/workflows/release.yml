@@ -94,6 +94,25 @@ jobs:
           DMG_PATH="$(find src-tauri/target/universal-apple-darwin/release/bundle/dmg -maxdepth 1 -name '*.dmg' | head -n 1)"
           scripts/make-macos-dmg.sh "${VERSION}" "${DMG_PATH}"
 
+      - name: Normalize release asset names
+        shell: bash
+        run: |
+          OLD="$(node -p "require('./src-tauri/tauri.conf.json').productName")"
+          NEW="OrangutanInterview"
+          BUNDLE_DIR="src-tauri/target/${{ matrix.target }}/release/bundle"
+          echo "Normalizing '${OLD}' -> '${NEW}' under ${BUNDLE_DIR}"
+          find "${BUNDLE_DIR}" -type f \( -name '*.exe' -o -name '*.dmg' -o -name '*.AppImage' \) -print0 |
+          while IFS= read -r -d '' f; do
+            base="$(basename "$f")"
+            fixed="${base//$OLD/$NEW}"
+            if [ "$fixed" != "$base" ]; then
+              mv -f "$f" "$(dirname "$f")/${fixed}"
+              echo "Renamed: ${base} -> ${fixed}"
+            fi
+          done
+          echo "Final assets:"
+          find "${BUNDLE_DIR}" -type f \( -name '*.exe' -o -name '*.dmg' -o -name '*.AppImage' \) -print
+
       - name: Upload desktop artifact
         uses: actions/upload-artifact@v4
         with:
@@ -132,12 +151,12 @@ jobs:
       - name: Package web tarball
         run: |
           VERSION="${{ steps.version.outputs.value }}"
-          STAGE="staging/面试猿-web-${VERSION}"
+          STAGE="staging/OrangutanInterview-web-${VERSION}"
           mkdir -p "${STAGE}"
           cp -r dist/. "${STAGE}/"
           cp README.md README_EN.md "${STAGE}/"
           mkdir -p web-dist
-          tar -czf "web-dist/面试猿-web-${VERSION}.tar.gz" -C staging "面试猿-web-${VERSION}"
+          tar -czf "web-dist/OrangutanInterview-web-${VERSION}.tar.gz" -C staging "OrangutanInterview-web-${VERSION}"
 
       - name: Upload web tarball artifact
         uses: actions/upload-artifact@v4

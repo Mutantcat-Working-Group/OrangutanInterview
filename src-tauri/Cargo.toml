@@ -1,6 +1,6 @@
 [package]
 name = "orangutan-interview"
-version = "1.0.20260927"
+version = "1.0.20260928"
 description = "面试猿（OrangutanInterview）桌面版"
 authors = ["Mutantcat"]
 edition = "2021"
@@ -12,5 +12,6 @@ tauri-build = { version = "2", features = [] }
 
 [dependencies]
 tauri = { version = "2", features = [] }
+tauri-plugin-store = "2"
 serde = { version = "1", features = ["derive"] }
 serde_json = "1"

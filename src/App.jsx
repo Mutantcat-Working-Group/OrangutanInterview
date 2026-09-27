@@ -133,8 +133,9 @@ function difficultyColor(value) {
 
 function AppInner() {
   const { message } = AntApp.useApp();
-  const [questions, setQuestions] = useState(loadQuestions);
-  const [settings, setSettings] = useState(loadSettings);
+  const [questions, setQuestions] = useState([]);
+  const [settings, setSettings] = useState({ ...DEFAULT_SETTINGS });
+  const [hydrated, setHydrated] = useState(false);
   const [search, setSearch] = useState('');
   const [categoryFilter, setCategoryFilter] = useState(undefined);
   const [difficultyFilter, setDifficultyFilter] = useState(undefined);
@@ -162,12 +163,32 @@ function AppInner() {
   const [testing, setTesting] = useState(false);
 
   useEffect(() => {
-    saveQuestions(questions);
-  }, [questions]);
+    let alive = true;
+    Promise.all([loadQuestions(), loadSettings()])
+      .then(([loadedQuestions, loadedSettings]) => {
+        if (!alive) return;
+        setQuestions(Array.isArray(loadedQuestions) ? loadedQuestions : []);
+        setSettings(
+          loadedSettings && typeof loadedSettings === 'object'
+            ? { ...DEFAULT_SETTINGS, ...loadedSettings }
+            : { ...DEFAULT_SETTINGS },
+        );
+      })
+      .finally(() => {
+        if (alive) setHydrated(true);
+      });
+    return () => {
+      alive = false;
+    };
+  }, []);
 
   useEffect(() => {
-    saveSettings(settings);
-  }, [settings]);
+    if (hydrated) saveQuestions(questions);
+  }, [questions, hydrated]);
+
+  useEffect(() => {
+    if (hydrated) saveSettings(settings);
+  }, [settings, hydrated]);
 
   const categories = useMemo(() => {
     const set = new Set(questions.map((q) => q.category).filter(Boolean));
@@ -458,7 +479,7 @@ function AppInner() {
     settingsForm.validateFields().then((values) => {
       setSettings((prev) => ({ ...prev, ...values }));
       setSettingsOpen(false);
-      message.success('API 设置已保存到本机浏览器');
+      message.success('API 设置已保存到本机');
     });
   };
 
@@ -476,7 +497,7 @@ function AppInner() {
   };
 
   const clearAllData = () => {
-    clearLocalData();
+    Promise.resolve(clearLocalData()).catch(() => {});
     setQuestions([]);
     setSettings({ ...DEFAULT_SETTINGS });
     setCurrentQuestion(null);
@@ -973,8 +994,8 @@ function AppInner() {
           <Alert
             type="info"
             showIcon
-            message="仅保存在当前浏览器"
-            description="API Key 只存于浏览器的 localStorage，不会发送到任何其他服务器；只有点击「查看答案」时才直接调用你填写的接口地址。"
+            message="仅保存在本机"
+            description="API Key 只保存在本机（桌面版存于应用配置目录，浏览器存于 localStorage），不会发送到任何其他服务器；只有点击「查看答案」时才直接调用你填写的接口地址。"
             style={{ marginBottom: 20 }}
           />
           <Form.Item
