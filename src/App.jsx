@@ -719,8 +719,7 @@ function AppInner() {
             size="middle"
             columns={tableColumns}
             dataSource={filteredQuestions}
-            scroll={{ x: 860 }}
-            pagination={{ pageSize: 8, showSizeChanger: false, showTotal: (t) => `共 ${t} 条` }}
+            pagination={{ pageSize: 11, showSizeChanger: false, showTotal: (t) => `共 ${t} 条` }}
             locale={{
               emptyText: (
                 <Empty description="题库为空，点击右上角「示例题库」或手动添加">

@@ -89,27 +89,38 @@ body {
     flex-direction: column;
   }
 
-  .library-panel .ant-table-header {
-    flex: 0 0 auto;
-  }
-
-  .library-panel .ant-table-body {
+  /* 未设置 scroll.y 时表头不拆分，滚动容器是 .ant-table-content：撑满剩余高度并内部纵向滚动。 */
+  .library-panel .ant-table-content {
     flex: 1 1 auto;
     min-height: 0;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+
+  .library-panel .ant-table-thead > tr > th {
+    position: sticky;
+    top: 0;
+    z-index: 2;
   }
 
   .library-panel .ant-pagination {
     flex: 0 0 auto;
   }
 
-  .library-panel .ant-table-empty .ant-table-body table,
-  .library-panel .ant-table-empty .ant-table-body tbody {
-    height: 100%;
+  /* 空态：表头钉在顶部，空块在表头下方区域垂直居中，且不产生滚动条。 */
+  .library-panel .ant-table-content:has(.ant-table-placeholder) {
+    display: flex;
+    flex-direction: column;
+    overflow-y: hidden;
   }
 
-  .library-panel .ant-table-empty .ant-table-placeholder td.ant-table-cell {
-    height: 100%;
-    vertical-align: middle;
+  .library-panel .ant-table-content:has(.ant-table-placeholder) table {
+    flex: 1 1 auto;
+    min-height: 0;
+  }
+
+  .library-panel .ant-table-content:has(.ant-table-placeholder) .ant-table-placeholder td {
+    height: calc(100% - 56px);
     padding: 24px 16px;
   }
 }
@@ -364,7 +375,7 @@ body {
   font-size: 12px;
 }
 
-.library-panel .ant-pagination {
+.library-panel .ant-table-wrapper .ant-pagination {
   margin: 0;
   padding: 12px 16px;
   border-top: 1px solid var(--oi-border);

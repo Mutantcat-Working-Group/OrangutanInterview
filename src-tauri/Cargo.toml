@@ -1,6 +1,6 @@
 [package]
 name = "orangutan-interview"
-version = "1.0.20260928"
+version = "1.0.20260929"
 description = "面试猿（OrangutanInterview）桌面版"
 authors = ["Mutantcat"]
 edition = "2021"
