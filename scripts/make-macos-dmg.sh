@@ -32,11 +32,18 @@ APP_NAME="$(basename "${APP_PATH}" .app)"
 ln -s /Applications "${STAGE}/Applications"
 
 hdiutil create -volname "${APP_NAME}" -srcfolder "${STAGE}" -fs HFS+ -format UDZO -ov "${FINAL_DMG_PATH}" >/dev/null
+codesign --force --sign - --timestamp=none "${FINAL_DMG_PATH}"
+codesign --verify --strict --verbose=2 "${FINAL_DMG_PATH}"
+codesign -dv --verbose=2 "${FINAL_DMG_PATH}" 2>&1 | grep -q 'Signature=adhoc'
+hdiutil verify "${FINAL_DMG_PATH}" >/dev/null
 
-# Fail loudly if the shipped image lost the app or the shortcut.
+# Fail loudly if the shipped image lost the app, its ad-hoc signature, or the shortcut.
 hdiutil attach -quiet -readonly -nobrowse -mountpoint "${VERIFY_MNT}" "${FINAL_DMG_PATH}" >/dev/null
-test -n "$(find "${VERIFY_MNT}" -maxdepth 1 -name '*.app')"
+VERIFY_APP="$(find "${VERIFY_MNT}" -maxdepth 1 -name '*.app' | head -n 1)"
+test -n "${VERIFY_APP}"
 test -L "${VERIFY_MNT}/Applications"
+codesign --verify --deep --strict --verbose=2 "${VERIFY_APP}"
+codesign -dv --verbose=2 "${VERIFY_APP}" 2>&1 | grep -q 'Signature=adhoc'
 hdiutil detach -quiet "${VERIFY_MNT}" >/dev/null
 
 echo "${FINAL_DMG_PATH}"

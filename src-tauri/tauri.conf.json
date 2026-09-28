@@ -37,6 +37,13 @@
     ],
     "macOS": {
       "signingIdentity": "-"
+    },
+    "windows": {
+      "nsis": {
+        "installMode": "perMachine",
+        "languages": ["SimpChinese"],
+        "template": "installer.nsi"
+      }
     }
   }
 }
