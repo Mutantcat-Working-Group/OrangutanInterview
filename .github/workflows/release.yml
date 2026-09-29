@@ -29,17 +29,23 @@ jobs:
             bundles: nsis
             asset-path: src-tauri/target/x86_64-pc-windows-msvc/release/bundle/nsis/*.exe
           - name: windows-aarch64
-            runner: windows-latest
+            runner: windows-11-arm
             target: aarch64-pc-windows-msvc
             rust-targets: aarch64-pc-windows-msvc
             bundles: nsis
             asset-path: src-tauri/target/aarch64-pc-windows-msvc/release/bundle/nsis/*.exe
-          - name: macos-universal
-            runner: macos-latest
-            target: universal-apple-darwin
-            rust-targets: aarch64-apple-darwin,x86_64-apple-darwin
+          - name: macos-x86_64
+            runner: macos-15-intel
+            target: x86_64-apple-darwin
+            rust-targets: x86_64-apple-darwin
             bundles: dmg
-            asset-path: src-tauri/target/universal-apple-darwin/release/bundle/dmg/*.dmg
+            asset-path: src-tauri/target/x86_64-apple-darwin/release/bundle/dmg/*.dmg
+          - name: macos-aarch64
+            runner: macos-15
+            target: aarch64-apple-darwin
+            rust-targets: aarch64-apple-darwin
+            bundles: dmg
+            asset-path: src-tauri/target/aarch64-apple-darwin/release/bundle/dmg/*.dmg
           - name: linux-x86_64
             runner: ubuntu-24.04
             target: x86_64-unknown-linux-gnu
@@ -153,7 +159,7 @@ jobs:
         if: runner.os == 'macOS'
         run: |
           VERSION="$(node -p "require('./package.json').version")"
-          DMG_PATH="$(find src-tauri/target/universal-apple-darwin/release/bundle/dmg -maxdepth 1 -name '*.dmg' | head -n 1)"
+          DMG_PATH="$(find src-tauri/target/${{ matrix.target }}/release/bundle/dmg -maxdepth 1 -name '*.dmg' | head -n 1)"
           scripts/make-macos-dmg.sh "${VERSION}" "${DMG_PATH}"
 
       - name: Normalize release asset names
